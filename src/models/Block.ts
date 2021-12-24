@@ -7,6 +7,7 @@ export type Block = {
   // TODO: Rather than an unorganized dictionary
   // this could maybe be split into 10 layers,
   // each with their own dictionary
+  // that might make rendering easier
   contents: { [key: string]: BaseThing };
 };
 
@@ -34,7 +35,7 @@ export const render = (
   {}: { block: Block; zLevel: number },
 ): void => {
   // console.clear();
-  // Object.values(block).forEach(/*
+  // Object.values(block.contents).forEach(/*
   //  print a 10x10 grid of the z-level
   //  open question is how to retrieve just those items.
   //  maybe for right now just go through all 10 levels and pick the ones you like

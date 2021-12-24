@@ -1,23 +1,56 @@
 import { AllTypes } from "./AllTypes.ts";
-import { BaseThing } from "./BaseThing.ts";
+import { BaseThing, Coordinates, UUID } from "./BaseThing.ts";
 
-// TODO we need a way of getting a list of all thing types
-// do not introduce hierarchies
+export namespace Leaf {
+  export interface Interface extends BaseThing {
+    type: AllTypes.leaf;
+  }
 
-export interface Leaf extends BaseThing {
-  type: AllTypes.leaf;
+  export const factory = ({ position }: { position: UUID }): Interface => ({
+    type: AllTypes.leaf,
+    position,
+    id: crypto.randomUUID(),
+  });
 }
 
-export interface Limb extends BaseThing {
-  type: AllTypes.limb;
-  leaves: Leaf[];
+export namespace Limb {
+  export interface Interface extends BaseThing {
+    type: AllTypes.limb;
+    leaves: Leaf.Interface[];
+  }
+
+  export const factory = ({ position }: { position: UUID }): Interface => {
+    const id = crypto.randomUUID();
+
+    return ({
+      type: AllTypes.limb,
+      leaves: [Leaf.factory({ position: id })],
+      position,
+      id,
+    });
+  };
 }
 
-export interface Tree extends BaseThing {
-  type: AllTypes.tree;
-  limbs: Limb[];
-}
+export namespace Tree {
+  export interface Interface extends BaseThing {
+    type: AllTypes.tree;
+    limbs: Limb.Interface[];
+  }
 
-// lol that sounds kind of gross
-export const treeTick = () => {
-};
+  export const factory = (
+    { position }: { position: Coordinates },
+  ): Interface => {
+    const id = crypto.randomUUID();
+
+    return {
+      type: AllTypes.tree,
+      limbs: [Limb.factory({ position: id })],
+      id,
+      position,
+    };
+  };
+
+  export const tick = (_tree: Interface) => {
+    // do one action
+  };
+}

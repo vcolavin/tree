@@ -1,8 +1,12 @@
-import trees from "../data/trees.json" assert { type: "json" };
+import block1 from "../data/block1x1.json" assert { type: "json" };
 
-console.log(trees[0]);
+console.log(Object.values(block1));
 
 console.log("look at this cool uuid!", crypto.randomUUID());
+
+const initialize = () => {
+  mainLoop();
+};
 
 const mainLoop = async () => {
   while (true) {
@@ -13,8 +17,9 @@ const mainLoop = async () => {
     // 5. wait for >1 full second to have passed
     // 6. goto 1
 
+    // perhaps break on a keystroke
     break;
   }
 };
 
-mainLoop();
+initialize();
