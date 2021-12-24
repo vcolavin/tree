@@ -41,7 +41,7 @@ export const render = (
   });
 
   fieldToRender.forEach((row) => {
-    console.log(row);
+    console.log(row.join(" "));
   });
 };
 

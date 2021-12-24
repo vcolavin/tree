@@ -1,2 +1,2 @@
 #!/opt/homebrew/bin/bash
-deno run ./src/index.ts
+deno run --allow-read ./src/index.ts
