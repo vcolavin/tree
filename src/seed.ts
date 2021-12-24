@@ -1,8 +1,46 @@
-// seeds the world if none exists
-// TODO: import a list of all possible things
-// and run a factory on each
+import { Block } from "./models/Block.ts";
+import { Tree } from "./models/Tree.ts";
+import { Person } from "./models/Person.ts";
+import { BaseThing, Coordinates, Position } from "./models/BaseThing.ts";
 
-// make sure the data file has a "machine generated" warning
+const generateRandomCoords = (
+  { max = 9, min = 0 }: { max?: number; min?: number } = {},
+): Coordinates => {
+  const x = Math.floor(Math.random() * (max + 1 - min) + min);
+  const y = Math.floor(Math.random() * (max + 1 - min) + min);
+
+  return [x, y, 0];
+};
+
+const generateN = <T extends BaseThing>(
+  { factory, n }: {
+    factory: (args: { position: Position }) => T;
+    n: number;
+    args?: Record<string, any>;
+  },
+): T[] => {
+  const generated: T[] = [];
+
+  for (let i = 0; i++; i < n) {
+    generated.push(factory({ position: generateRandomCoords() }));
+  }
+
+  return generated;
+};
+
+const seed = () => {
+  const blockContents: Block["contents"] = {};
+
+  const trees = generateN({ factory: Tree.factory, n: 5 });
+  const people = generateN({ factory: Person.factory, n: 3 });
+
+  trees.forEach((tree) => blockContents[tree.id] = tree);
+  people.forEach((person) => blockContents[person.id] = person);
+};
+
+seed();
+
+// seeds the world if none exists
 
 // the data folder will have the structure:
 /*

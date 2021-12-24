@@ -1,5 +1,5 @@
 import { AllTypes } from "./AllTypes.ts";
-import { BaseThing, Coordinates } from "./BaseThing.ts";
+import { BaseThing, Position } from "./BaseThing.ts";
 
 export namespace Person {
   export interface Interface extends BaseThing {
@@ -8,7 +8,7 @@ export namespace Person {
   }
 
   export const factory = (
-    { position }: { position: Coordinates },
+    { position }: { position: Position },
   ): Interface => {
     return {
       name: "O'Henry",
