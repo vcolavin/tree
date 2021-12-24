@@ -7,9 +7,6 @@ export interface BaseThing {
   position: Position;
   type: AllTypes;
   id: UUID;
-
-  /** Symbol used when rendering map */
-  symbol?: string;
 }
 
 // can't get this stupid shit to work

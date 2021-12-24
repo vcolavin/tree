@@ -1,9 +1,3 @@
-import block1 from "../data/block1x1.json" assert { type: "json" };
-
-console.log(Object.values(block1));
-
-console.log("look at this cool uuid!", crypto.randomUUID());
-
 const initialize = () => {
   // load up the data
   // initialize the block(s)
@@ -13,6 +7,7 @@ const initialize = () => {
 
 const mainLoop = async () => {
   while (true) {
+    console.clear();
     // 1. print the world as it is
     // 2. go through each object and do a tick
     // 3. reconcile all the ticks (sounds hard)
@@ -21,7 +16,11 @@ const mainLoop = async () => {
     // 6. goto 1
 
     // perhaps break on a keystroke
-    break;
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+
+    // break;
   }
 };
 

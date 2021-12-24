@@ -32,6 +32,9 @@ const generateN = <T extends BaseThing>(
 const seed = () => {
   const blockContents: Block["contents"] = {};
 
+  // TODO: instead of generating N trees and placing them in the grid
+  // walk along each coordinate and decide whether or not a tree should grow there
+
   const trees = generateN({ factory: Tree.factory, n: 5 });
   const people = generateN({ factory: Person.factory, n: 3 });
 

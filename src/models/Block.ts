@@ -27,22 +27,9 @@ export const moveTo = (
 };
 
 export const save = (block: Block): void => {
-  // convert block contents to JSON then
-  // write block to file at
   const path = `data/block${block.coords[0]}x${block.coords[1]}.json`;
 
   const content = JSON.stringify(block.contents);
 
   Deno.writeTextFile(path, content);
-};
-
-export const render = (
-  {}: { block: Block; zLevel: number },
-): void => {
-  // console.clear();
-  // Object.values(block.contents).forEach(/*
-  //  print a 10x10 grid of the z-level
-  //  open question is how to retrieve just those items.
-  //  maybe for right now just go through all 10 levels and pick the ones you like
-  // */);
 };
