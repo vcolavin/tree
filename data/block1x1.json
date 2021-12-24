@@ -1,6 +1,7 @@
-[
-  {
+{
+  "id1": {
     "type": "tree",
+    "limbs": [],
     "position": [0, 0, 0]
   }
-]
+}
