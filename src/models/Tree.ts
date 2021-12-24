@@ -1,5 +1,5 @@
 import { AllTypes } from "./AllTypes.ts";
-import { BaseFactory, BaseThing, Coordinates, Position } from "./BaseThing.ts";
+import { BaseThing, Position } from "./BaseThing.ts";
 
 export namespace Leaf {
   export interface Interface extends BaseThing {

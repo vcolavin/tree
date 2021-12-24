@@ -5,6 +5,9 @@ console.log(Object.values(block1));
 console.log("look at this cool uuid!", crypto.randomUUID());
 
 const initialize = () => {
+  // load up the data
+  // initialize the block(s)
+
   mainLoop();
 };
 

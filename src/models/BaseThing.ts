@@ -8,7 +8,7 @@ export interface BaseThing {
   type: AllTypes;
   id: UUID;
 
-  /** Symbol to be rendered */
+  /** Symbol used when rendering map */
   symbol?: string;
 }
 

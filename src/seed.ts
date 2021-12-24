@@ -1,4 +1,4 @@
-import { Block } from "./models/Block.ts";
+import { Block, save } from "./models/Block.ts";
 import { Tree } from "./models/Tree.ts";
 import { Person } from "./models/Person.ts";
 import { BaseThing, Coordinates, Position } from "./models/BaseThing.ts";
@@ -13,7 +13,7 @@ const generateRandomCoords = (
 };
 
 const generateN = <T extends BaseThing>(
-  { factory, n }: {
+  { factory, n, args = {} }: {
     factory: (args: { position: Position }) => T;
     n: number;
     args?: Record<string, any>;
@@ -21,8 +21,9 @@ const generateN = <T extends BaseThing>(
 ): T[] => {
   const generated: T[] = [];
 
-  for (let i = 0; i++; i < n) {
-    generated.push(factory({ position: generateRandomCoords() }));
+  for (let i = 0; i < n; i++) {
+    const thing = factory({ position: generateRandomCoords(), ...args });
+    generated.push(thing);
   }
 
   return generated;
@@ -36,6 +37,12 @@ const seed = () => {
 
   trees.forEach((tree) => blockContents[tree.id] = tree);
   people.forEach((person) => blockContents[person.id] = person);
+  const block: Block = {
+    contents: blockContents,
+    coords: [0, 0],
+  };
+
+  save(block);
 };
 
 seed();

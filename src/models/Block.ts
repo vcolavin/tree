@@ -26,9 +26,14 @@ export const moveTo = (
   return true;
 };
 
-export const save = (_block: Block): void => {
+export const save = (block: Block): void => {
   // convert block contents to JSON then
-  // write block to file at `data/block${block.coords[0]}x${block.coords[1]}`
+  // write block to file at
+  const path = `data/block${block.coords[0]}x${block.coords[1]}.json`;
+
+  const content = JSON.stringify(block.contents);
+
+  Deno.writeTextFile(path, content);
 };
 
 export const render = (
