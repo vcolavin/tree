@@ -1,7 +1,7 @@
 import { Block, BlockContentDict, generateList, save } from "./models/Block.ts";
 import { Tree } from "./models/Tree.ts";
 import { Person } from "./models/Person.ts";
-import { BaseThing, Coordinates, Position } from "./models/BaseThing.ts";
+import { BaseFactory, BaseThing, Coordinates } from "./models/BaseThing.ts";
 
 const generateRandomCoords = (
   { max = 9, min = 0 }: { max?: number; min?: number } = {},
@@ -14,7 +14,7 @@ const generateRandomCoords = (
 
 const generateN = <T extends BaseThing>(
   { factory, n, args = {} }: {
-    factory: (args: { position: Position }) => T;
+    factory: BaseFactory<T>;
     n: number;
     args?: Record<string, any>;
   },
