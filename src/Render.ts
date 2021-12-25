@@ -1,6 +1,17 @@
 import { AllTypes } from "./models/AllTypes.ts";
 import { Block, BlockContentDict } from "./models/Block.ts";
 
+// TODO: render a block with a nice border and a name
+// like this:
+/*
+ *  +----Block1x1-----+
+ *  |                 |
+ *  |     block       |
+ *  |    contents     |
+ *  |                 |
+ *  |                 |
+ *  +-----------------+
+ */
 export const render = (
   { block: { contentList, contentDict }, zLevel, tickCount = 0 }: {
     block: Block;

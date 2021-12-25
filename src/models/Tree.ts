@@ -65,5 +65,7 @@ export namespace Tree {
 
   export const tick = (_tree: Interface) => {
     // do one action
+    // probalistically grow a branch or something
+    // .1% chance to die and create a log
   };
 }
