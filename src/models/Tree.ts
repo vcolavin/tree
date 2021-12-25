@@ -1,14 +1,14 @@
 import { AllTypes } from "./AllTypes.ts";
-import { BaseThing, Position } from "./BaseThing.ts";
+import { BaseFactory, BaseThing, Position } from "./BaseThing.ts";
 
 export namespace Leaf {
   export interface Interface extends BaseThing {
     type: AllTypes.leaf;
   }
 
-  export const factory = (
+  export const factory: BaseFactory<Interface> = (
     { position }: { position: Position },
-  ): Interface => {
+  ) => {
     const leaf: Interface = {
       type: AllTypes.leaf,
       position,
@@ -30,7 +30,7 @@ export namespace Limb {
     leaves: Leaf.Interface[];
   }
 
-  export const factory = (
+  export const factory: BaseFactory<Interface> = (
     { position }: { position: Position },
   ): Interface => {
     const id = crypto.randomUUID();
@@ -50,7 +50,7 @@ export namespace Tree {
     limbs: Limb.Interface[];
   }
 
-  export const factory = (
+  export const factory: BaseFactory<Interface> = (
     { position }: { position: Position },
   ): Interface => {
     const id = crypto.randomUUID();

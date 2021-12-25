@@ -1,14 +1,23 @@
 import { BaseThing, Coordinates } from "./BaseThing.ts";
 
+/**
+ * Four-dimensional array describing positions of things.
+ * Each space (specified by [z][x][y]) contains a list of thing IDs
+ * ordered from bottom to top.
+ *
+ * Note that this is in zxy order to make rendering a z-level easiser
+ * while coordinates are otherwise xyz
+ */
+export type BlockContentList = string[][][][];
+
+export type BlockContentDict = { [key: string]: BaseThing };
+
 // Block is going to be the main item in memory that contains the 10x10x10 grid
 export type Block = {
   coords: [number, number];
 
-  // TODO: Rather than an unorganized dictionary
-  // this could maybe be split into 10 layers,
-  // each with their own dictionary
-  // that might make rendering easier
-  contents: { [key: string]: BaseThing };
+  contentList: BlockContentList;
+  contentDict: BlockContentDict;
 };
 
 export const getNeighbors = (
@@ -26,10 +35,61 @@ export const moveTo = (
   return true;
 };
 
+const getEmptyRow =
+  (): BlockContentList[0][0] => [[], [], [], [], [], [], [], [], [], []];
+
+const getEmptyLevel = (): BlockContentList[0] => [
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+  getEmptyRow(),
+];
+
+const getEmptyContentList = (): BlockContentList => [
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+  getEmptyLevel(),
+];
+
+// TODO right now we are going to generate the list on each game loop,
+// which will probably be inefficient
+// what we'll do in the future is collect diffs and apply them to the list
+export const generateList = (
+  blockDict: BlockContentDict,
+): BlockContentList => {
+  const thing: BlockContentList = Object.values(blockDict).filter((thing) =>
+    typeof thing.position !== "string"
+  ).reduce(
+    (memo, thing) => {
+      const [x, y, z] = thing.position as Coordinates;
+
+      // currently we don't care about vertical ordering within a space
+      memo[z][x][y].push(thing.id);
+      return memo;
+    },
+    getEmptyContentList(),
+  );
+
+  return thing;
+};
+
 export const save = (block: Block): void => {
   const path = `data/block${block.coords[0]}x${block.coords[1]}.json`;
 
-  const content = JSON.stringify(block.contents);
+  const content = JSON.stringify(block.contentDict);
 
   Deno.writeTextFile(path, content);
 };

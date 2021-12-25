@@ -1,4 +1,4 @@
-import { Block } from "./models/Block.ts";
+import { Block, generateList } from "./models/Block.ts";
 import { render } from "./Render.ts";
 
 const initialize = () => {
@@ -14,24 +14,27 @@ const initialize = () => {
 // 4. rewrite json
 // 5. wait for >1 full second to have passed
 // 6. goto 1
+
 const mainLoop = async () => {
+  const path = `data/block0x0.json`;
+  const fileContent = await Deno.readTextFile(path);
+  const contentDict = JSON.parse(fileContent);
+  // TODO: Why does this have to hard-code the coords?
+  // shouldn't the file also know about that
+  const block: Block = {
+    coords: [0, 0],
+    contentDict,
+    contentList: generateList(contentDict),
+  };
+
   while (true) {
     console.clear();
-    const path = `data/block0x0.json`;
-    const fileContent = await Deno.readTextFile(path);
-    const contents = JSON.parse(fileContent);
-    // TODO: Why does this have to hard-code the coords?
-    // shouldn't the file also know about that
-    const block: Block = { coords: [0, 0], contents };
-
     render({ block, zLevel: 0 });
 
     // perhaps break on a keystroke
     await new Promise((resolve) => {
       setTimeout(resolve, 1000);
     });
-
-    break;
   }
 };
 

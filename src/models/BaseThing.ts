@@ -4,15 +4,14 @@ export type UUID = string;
 export type Position = Coordinates | UUID;
 
 export interface BaseThing {
+  // TODO: there may be things that don't need positions
+  // like concepts or memories or rivers (which occupy many positions),
+  // but we'll handle that later
   position: Position;
   type: AllTypes;
   id: UUID;
 }
 
-// can't get this stupid shit to work
-// export type BaseFactory = <T extends BaseThing>(
-//   args: { position: Position },
-// ) => T;
-
-// TODO: there may be things that don't need positions
-// like concepts or memories, but we'll handle that later
+export type BaseFactory<T extends BaseThing> = (
+  args: { position: Position },
+) => T;
