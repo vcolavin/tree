@@ -1,4 +1,4 @@
-import { Block, generateList, save } from "./models/Block.ts";
+import { Block, BlockContentDict, generateList, save } from "./models/Block.ts";
 import { Tree } from "./models/Tree.ts";
 import { Person } from "./models/Person.ts";
 import { BaseThing, Coordinates, Position } from "./models/BaseThing.ts";
@@ -30,7 +30,7 @@ const generateN = <T extends BaseThing>(
 };
 
 const seed = () => {
-  const contentDict: Block["contentDict"] = {};
+  const contentDict: BlockContentDict = {};
 
   const trees = generateN({ factory: Tree.factory, n: 5 });
   const people = generateN({ factory: Person.factory, n: 3 });
