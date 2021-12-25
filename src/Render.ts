@@ -1,22 +1,21 @@
 import { AllTypes } from "./models/AllTypes.ts";
 import { Block, BlockContentDict } from "./models/Block.ts";
 
-const emptyRow = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "] as const;
-
-// TODO: this should cycle between objects if there are multiple objects on one tile
 export const render = (
-  { block: { contentList, contentDict }, zLevel }: {
+  { block: { contentList, contentDict }, zLevel, tickCount = 0 }: {
     block: Block;
     zLevel: number;
+    tickCount?: number;
   },
 ): void => {
   const level = contentList[zLevel];
 
   level.forEach((row) => {
-    const constructedRow = emptyRow
-      .map((val, col) =>
-        getSymbol({ thingId: row[col]?.[0], contentDict }) ?? val
-      );
+    const constructedRow = row.map((col) => {
+      const thingId = col[tickCount % col.length];
+
+      return getSymbol({ thingId, contentDict }) ?? " ";
+    });
 
     console.log(constructedRow.join(" "));
   });

@@ -27,9 +27,11 @@ const mainLoop = async () => {
     contentList: generateList(contentDict),
   };
 
-  while (true) {
+  let tickCount = 0;
+
+  while (++tickCount) {
     console.clear();
-    render({ block, zLevel: 0 });
+    render({ block, zLevel: 0, tickCount });
 
     // perhaps break on a keystroke
     await new Promise((resolve) => {
