@@ -1,4 +1,4 @@
-import { BaseThing, Coordinates } from "./BaseThing.ts";
+import { BaseThing, Coordinates } from "./BaseThing";
 
 /**
  * Four-dimensional array describing positions of things.
@@ -20,23 +20,36 @@ export type Block = {
   contentDict: BlockContentDict;
 };
 
-export const getNeighbors = (
-  {}: { thing: BaseThing; block: Block },
-): BaseThing[] => {
+export const getNeighbors = ({}: {
+  thing: BaseThing;
+  block: Block;
+}): BaseThing[] => {
   // TODO, return a list of neighbors
   // for now just do on the x-y plane
   return [];
 };
 
-export const moveTo = (
-  {}: { thing: BaseThing; coordinates: Coordinates; block: Block },
-): boolean => {
+export const moveTo = ({}: {
+  thing: BaseThing;
+  coordinates: Coordinates;
+  block: Block;
+}): boolean => {
   // TODO: move the data
   return true;
 };
 
-const getEmptyRow =
-  (): BlockContentList[0][0] => [[], [], [], [], [], [], [], [], [], []];
+const getEmptyRow = (): BlockContentList[0][0] => [
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+];
 
 const getEmptyLevel = (): BlockContentList[0] => [
   getEmptyRow(),
@@ -67,29 +80,24 @@ const getEmptyContentList = (): BlockContentList => [
 // TODO right now we are going to generate the list on each game loop,
 // which will probably be inefficient
 // what we'll do in the future is collect diffs and apply them to the list
-export const generateList = (
-  blockDict: BlockContentDict,
-): BlockContentList => {
-  const thing: BlockContentList = Object.values(blockDict).filter((thing) =>
-    typeof thing.position !== "string"
-  ).reduce(
-    (memo, thing) => {
+export const generateList = (blockDict: BlockContentDict): BlockContentList => {
+  const thing: BlockContentList = Object.values(blockDict)
+    .filter((thing) => typeof thing.position !== "string")
+    .reduce((memo, thing) => {
       const [x, y, z] = thing.position as Coordinates;
 
       // currently we don't care about vertical ordering within a space
       memo[z][x][y].push(thing.id);
       return memo;
-    },
-    getEmptyContentList(),
-  );
+    }, getEmptyContentList());
 
   return thing;
 };
 
-export const save = (block: Block): void => {
-  const path = `data/block${block.coords[0]}x${block.coords[1]}.json`;
+export const save = ({ coords, contentDict }: Block): void => {
+  const blockName = `${coords[0]}x${coords[1]}`;
 
-  const content = JSON.stringify(block.contentDict);
+  const content = JSON.stringify(contentDict);
 
-  Deno.writeTextFile(path, content);
+  localStorage.setItem(blockName, content);
 };

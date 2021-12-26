@@ -1,5 +1,6 @@
-import { AllTypes } from "./AllTypes.ts";
-import { BaseFactory, BaseThing, Coordinates, Position } from "./BaseThing.ts";
+import { v4 } from "uuid";
+import { AllTypes } from "./AllTypes";
+import { BaseFactory, BaseThing, Coordinates, Position } from "./BaseThing";
 
 export namespace Person {
   export interface Interface extends BaseThing {
@@ -7,13 +8,15 @@ export namespace Person {
     name: string;
   }
 
-  export const factory: BaseFactory<Interface> = (
-    { position }: { position: Position },
-  ) => {
+  export const factory: BaseFactory<Interface> = ({
+    position,
+  }: {
+    position: Position;
+  }) => {
     return {
       name: "O'Henry",
       position,
-      id: crypto.randomUUID(),
+      id: v4(),
       type: AllTypes.person,
     };
   };
@@ -39,9 +42,10 @@ const adjacentPositionModifiers: [number, number][] = [
 ];
 
 const getAdjacentPosition = ([x, y, z]: Coordinates): Coordinates => {
-  const [xMod, yMod] = adjacentPositionModifiers[
-    Math.floor(Math.random() * adjacentPositionModifiers.length)
-  ];
+  const [xMod, yMod] =
+    adjacentPositionModifiers[
+      Math.floor(Math.random() * adjacentPositionModifiers.length)
+    ];
 
   return [x + xMod, y + yMod, z];
 };

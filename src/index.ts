@@ -1,32 +1,26 @@
-import { Block, generateList } from "./models/Block.ts";
-import { render } from "./Render.ts";
+import { BlockContentDict } from "./models/Block";
+import { Block, generateList } from "./models/Block";
+import { render } from "./Render";
+import { seed } from "./seed";
 
 const initialize = () => {
-  // load up the data
-  // initialize the block(s)
+  const fileContent = localStorage.getItem("block0x0");
+  const contentDict: BlockContentDict = JSON.parse(fileContent);
 
-  mainLoop();
-};
+  if (!contentDict) {
+    seed();
+  }
 
-// 1. print the world as it is
-// 2. go through each object and do a tick
-// 3. reconcile all the ticks (sounds hard)
-// 4. rewrite json
-// 5. wait for >1 full second to have passed
-// 6. goto 1
-
-const mainLoop = async () => {
-  const path = `data/block0x0.json`;
-  const fileContent = await Deno.readTextFile(path);
-  const contentDict = JSON.parse(fileContent);
-  // TODO: Why does this have to hard-code the coords?
-  // shouldn't the file also know about that
   const block: Block = {
     coords: [0, 0],
     contentDict,
     contentList: generateList(contentDict),
   };
 
+  mainLoop(block);
+};
+
+const mainLoop = async (block: Block) => {
   let tickCount = 0;
 
   while (++tickCount) {

@@ -1,18 +1,22 @@
-import { AllTypes } from "./AllTypes.ts";
-import { BaseFactory, BaseThing, Position } from "./BaseThing.ts";
+import { v4 } from "uuid";
+
+import { AllTypes } from "./AllTypes";
+import { BaseFactory, BaseThing, Position } from "./BaseThing";
 
 export namespace Leaf {
   export interface Interface extends BaseThing {
     type: AllTypes.leaf;
   }
 
-  export const factory: BaseFactory<Interface> = (
-    { position }: { position: Position },
-  ) => {
+  export const factory: BaseFactory<Interface> = ({
+    position,
+  }: {
+    position: Position;
+  }) => {
     const leaf: Interface = {
       type: AllTypes.leaf,
       position,
-      id: crypto.randomUUID(),
+      id: v4(),
     };
 
     return leaf;
@@ -30,17 +34,19 @@ export namespace Limb {
     leaves: Leaf.Interface[];
   }
 
-  export const factory: BaseFactory<Interface> = (
-    { position }: { position: Position },
-  ): Interface => {
-    const id = crypto.randomUUID();
+  export const factory: BaseFactory<Interface> = ({
+    position,
+  }: {
+    position: Position;
+  }): Interface => {
+    const id = v4();
 
-    return ({
+    return {
       type: AllTypes.limb,
       leaves: [Leaf.factory({ position: id })],
       position,
       id,
-    });
+    };
   };
 }
 
@@ -50,10 +56,12 @@ export namespace Tree {
     limbs: Limb.Interface[];
   }
 
-  export const factory: BaseFactory<Interface> = (
-    { position }: { position: Position },
-  ): Interface => {
-    const id = crypto.randomUUID();
+  export const factory: BaseFactory<Interface> = ({
+    position,
+  }: {
+    position: Position;
+  }): Interface => {
+    const id = v4();
 
     return {
       type: AllTypes.tree,
