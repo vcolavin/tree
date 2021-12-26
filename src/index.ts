@@ -39,4 +39,4 @@ const mainLoop = async (block: Block) => {
   }
 };
 
-initialize();
+window.onload = initialize;

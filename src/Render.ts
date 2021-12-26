@@ -23,15 +23,17 @@ export const render = ({
 }): void => {
   const level = contentList[zLevel];
 
-  level.forEach((row) => {
+  const screen = level.map((row) => {
     const constructedRow = row.map((col) => {
       const thingId = col[tickCount % col.length];
 
       return getSymbol({ thingId, contentDict }) ?? " ";
     });
 
-    console.log(constructedRow.join(" "));
+    return constructedRow.join(" ");
   });
+
+  document.getElementById("rendering-space").innerHTML = screen.join("\n");
 };
 
 // TODO: how will we represent color information?

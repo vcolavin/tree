@@ -6,8 +6,12 @@ Notes as I go in the devlog folder.
 
 To do:
 
-- [ ] Transition to browser (sorry Deno)
-- [ ] Use a more robust persistent store
+- [x] Transition to browser (sorry Deno)
+- [ ] Use a lightweight view library like Preact
+- [x] Use a more robust persistent store
+
+      - This isn't exactly solved but the transition to localStorage feels pretty good for now.
+
 - [ ] Ticks and reconciliation
 - [ ] Testing (once in browser)
 - [ ] Add cursor which describes what's under the cursor
