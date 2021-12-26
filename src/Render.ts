@@ -33,6 +33,8 @@ export const render = ({
     return constructedRow.join(" ");
   });
 
+  screen.push(`tick: ${tickCount}`);
+
   document.getElementById("rendering-space").innerHTML = screen.join("\n");
 };
 

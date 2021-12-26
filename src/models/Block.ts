@@ -20,36 +20,9 @@ export type Block = {
   contentDict: BlockContentDict;
 };
 
-export const getNeighbors = ({}: {
-  thing: BaseThing;
-  block: Block;
-}): BaseThing[] => {
-  // TODO, return a list of neighbors
-  // for now just do on the x-y plane
-  return [];
-};
-
-export const moveTo = ({}: {
-  thing: BaseThing;
-  coordinates: Coordinates;
-  block: Block;
-}): boolean => {
-  // TODO: move the data
-  return true;
-};
-
-const getEmptyRow = (): BlockContentList[0][0] => [
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-  [],
-];
+// prettier-ignore
+const getEmptyRow = (): BlockContentList[0][0] =>
+  [[],[],[],[],[],[],[],[],[],[]];
 
 const getEmptyLevel = (): BlockContentList[0] => [
   getEmptyRow(),

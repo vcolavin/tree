@@ -48,5 +48,3 @@ export const seed = () => {
 
   save(block);
 };
-
-seed();
