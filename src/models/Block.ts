@@ -95,7 +95,7 @@ export const generateList = (blockDict: BlockContentDict): BlockContentList => {
 };
 
 export const save = ({ coords, contentDict }: Block): void => {
-  const blockName = `${coords[0]}x${coords[1]}`;
+  const blockName = `block${coords[0]}x${coords[1]}`;
 
   const content = JSON.stringify(contentDict);
 

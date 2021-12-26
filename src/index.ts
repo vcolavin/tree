@@ -4,12 +4,16 @@ import { render } from "./Render";
 import { seed } from "./seed";
 
 const initialize = () => {
-  const fileContent = localStorage.getItem("block0x0");
-  const contentDict: BlockContentDict = JSON.parse(fileContent);
+  let loadedContent = localStorage.getItem("block0x0");
 
-  if (!contentDict) {
+  // if the contents don't exist
+  // we must generate and save them
+  if (!loadedContent) {
     seed();
+    loadedContent = localStorage.getItem("block0x0");
   }
+
+  const contentDict: BlockContentDict = JSON.parse(loadedContent);
 
   const block: Block = {
     coords: [0, 0],
@@ -24,13 +28,14 @@ const mainLoop = async (block: Block) => {
   let tickCount = 0;
 
   while (++tickCount) {
-    console.clear();
     render({ block, zLevel: 0, tickCount });
 
     // perhaps break on a keystroke
     await new Promise((resolve) => {
       setTimeout(resolve, 1000);
     });
+
+    break;
   }
 };
 

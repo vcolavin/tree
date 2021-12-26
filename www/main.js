@@ -45,7 +45,7 @@
     return thing;
   };
   var save = ({ coords, contentDict }) => {
-    const blockName = `${coords[0]}x${coords[1]}`;
+    const blockName = `block${coords[0]}x${coords[1]}`;
     const content = JSON.stringify(contentDict);
     localStorage.setItem(blockName, content);
   };
@@ -266,11 +266,13 @@
 
   // src/index.ts
   var initialize = () => {
-    const fileContent = localStorage.getItem("block0x0");
-    const contentDict = JSON.parse(fileContent);
-    if (!contentDict) {
+    let loadedContent = localStorage.getItem("block0x0");
+    if (!loadedContent) {
+      throw "ugh";
       seed();
+      loadedContent = localStorage.getItem("block0x0");
     }
+    const contentDict = JSON.parse(loadedContent);
     const block = {
       coords: [0, 0],
       contentDict,
@@ -281,11 +283,11 @@
   var mainLoop = async (block) => {
     let tickCount = 0;
     while (++tickCount) {
-      console.clear();
       render({ block, zLevel: 0, tickCount });
       await new Promise((resolve) => {
         setTimeout(resolve, 1e3);
       });
+      break;
     }
   };
   initialize();
