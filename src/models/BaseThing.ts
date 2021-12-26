@@ -1,4 +1,4 @@
-import { AllTypes } from "./AllTypes.ts";
+import { AllTypes } from "./AllTypes";
 export type Coordinates = [number, number, number];
 export type UUID = string;
 export type Position = Coordinates | UUID;
@@ -12,6 +12,6 @@ export interface BaseThing {
   id: UUID;
 }
 
-export type BaseFactory<T extends BaseThing> = (
-  args: { position: Position },
-) => T;
+export type BaseFactory<T extends BaseThing> = (args: {
+  position: Position;
+}) => T;

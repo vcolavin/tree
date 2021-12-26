@@ -1,5 +1,5 @@
-import { AllTypes } from "./models/AllTypes.ts";
-import { Block, BlockContentDict } from "./models/Block.ts";
+import { AllTypes } from "./models/AllTypes";
+import { Block, BlockContentDict } from "./models/Block";
 
 // TODO: render a block with a nice border and a name
 // like this:
@@ -12,13 +12,15 @@ import { Block, BlockContentDict } from "./models/Block.ts";
  *  |                 |
  *  +-----------------+
  */
-export const render = (
-  { block: { contentList, contentDict }, zLevel, tickCount = 0 }: {
-    block: Block;
-    zLevel: number;
-    tickCount?: number;
-  },
-): void => {
+export const render = ({
+  block: { contentList, contentDict },
+  zLevel,
+  tickCount = 0,
+}: {
+  block: Block;
+  zLevel: number;
+  tickCount?: number;
+}): void => {
   const level = contentList[zLevel];
 
   level.forEach((row) => {
@@ -35,17 +37,21 @@ export const render = (
 // TODO: how will we represent color information?
 // this might also be better served by a object than a case statement
 // but this is fine for now
-export const getSymbol = (
-  { thingId, contentDict }: { thingId?: string; contentDict: BlockContentDict },
-): string | undefined => {
+export const getSymbol = ({
+  thingId,
+  contentDict,
+}: {
+  thingId?: string;
+  contentDict: BlockContentDict;
+}): string | undefined => {
   if (!thingId) {
     return undefined;
   }
 
   switch (contentDict[thingId]?.type) {
-    case (AllTypes.person):
+    case AllTypes.person:
       return "P";
-    case (AllTypes.tree):
+    case AllTypes.tree:
       return "T";
     default:
       return undefined;

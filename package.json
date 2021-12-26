@@ -1,0 +1,25 @@
+{
+  "name": "tree",
+  "version": "1.0.0",
+  "description": "Sort of a dwarf fortress idea.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "esbuild --bundle ./src/index.js --outfile=./www/main.js --servedir=www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vcolavin/tree.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vcolavin/tree/issues"
+  },
+  "homepage": "https://github.com/vcolavin/tree",
+  "dependencies": {
+    "@types/uuid": "^8.3.3",
+    "esbuild": "^0.14.8",
+    "uuid": "^8.3.2"
+  }
+}
