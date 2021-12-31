@@ -28,7 +28,7 @@ export namespace Person {
     };
   };
 
-  export const tick: BaseTick = ({
+  export const tick: BaseTick<Interface> = ({
     thing: person,
   }: {
     thing: Interface;
