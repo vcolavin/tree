@@ -21,11 +21,11 @@ export type BaseFactory<T extends BaseThing> = (args: {
 export const tick = <T extends BaseThing>(args: {
   thing: T;
   block: Block;
-}): BlockContentDict => {
+}): BlockContentDict | undefined => {
   switch (args.thing.type) {
     case AllTypes.person:
       return Person.tick(args);
     default:
-      return {};
+      return undefined;
   }
 };

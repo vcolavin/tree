@@ -1,5 +1,5 @@
 import { tick } from "./models/BaseThing";
-import { BlockContentDict, save } from "./models/Block";
+import { BlockContentDict, save, updateList } from "./models/Block";
 import { Block, generateList } from "./models/Block";
 import { render } from "./Render";
 import { seed } from "./seed";
@@ -30,16 +30,19 @@ const mainLoop = async (block: Block) => {
 
   while (++tickCount) {
     // generate and collate changes
-    const diffs = Object.values(block.contentDict).map((thing) =>
-      tick({ thing, block })
-    );
+    const diff = Object.values(block.contentDict)
+      .map((thing) => tick({ thing, block }))
+      .filter((diff) => diff)
+      .reduce((memo, diff) => ({ ...memo, ...diff }), {});
 
-    // reconcile change (very naive reconcilliation)
-    block.contentDict = diffs.reduce((memo, diff) => ({ ...memo, ...diff }), {
-      ...block.contentDict,
+    updateList({
+      list: block.contentList,
+      diff,
+      original: block.contentDict,
     });
 
-    block.contentList = generateList(block.contentDict);
+    // reconcile change (very naive implementation)
+    block.contentDict = { ...block.contentDict, ...diff };
 
     save(block);
 

@@ -67,6 +67,40 @@ export const generateList = (blockDict: BlockContentDict): BlockContentList => {
   return thing;
 };
 
+/**
+ * Mutative! surgically update a content list
+ * hopefully more efficient than reconstructing it
+ */
+export const updateList = ({
+  list,
+  diff,
+  original,
+}: {
+  list: BlockContentList;
+  diff: BlockContentDict;
+  original: BlockContentDict;
+}): void => {
+  // for each object in the diff
+  Object.entries(diff).forEach(([id, thing]) => {
+    // remove it from its original position
+    const oldPosition = original[id].position;
+    if (typeof oldPosition === "object") {
+      const [x, y, z] = oldPosition;
+      const space = list[z][x][y];
+
+      const i = space.indexOf(id);
+      i > -1 && space.splice(i, 1);
+    }
+
+    // and add it to its new position
+    const newPosition = thing.position;
+    if (typeof newPosition === "object") {
+      const [x, y, z] = newPosition;
+      list[z][x][y].push(id);
+    }
+  });
+};
+
 export const save = ({ coords, contentDict }: Block): void => {
   const blockName = `${coords[0]}x${coords[1]}`;
 
