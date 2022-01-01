@@ -1,79 +1,96 @@
 import { v4 } from "uuid";
 
-import { AllTypes } from "./AllTypes";
-import { BaseFactory, BaseThing, Position } from "./BaseThing";
+import {
+  BaseFactory,
+  BaseThing,
+  BaseTick,
+  BaseUtils,
+  Position,
+} from "./BaseThing";
 
-export namespace Leaf {
-  export interface Interface extends BaseThing {
-    type: AllTypes.leaf;
-  }
+const leafType = "leaf" as const;
 
-  export const factory: BaseFactory<Interface> = ({
-    position,
-  }: {
-    position: Position;
-  }) => {
-    const leaf: Interface = {
-      type: AllTypes.leaf,
-      position,
-      id: v4(),
-    };
-
-    return leaf;
-  };
-
-  export const tick = (_leaf: Interface) => {
-    // might could fall to the ground!
-    // in which case its position becomes the tree's position
-  };
+export interface Leaf extends BaseThing {
+  type: typeof leafType;
 }
 
-export namespace Limb {
-  export interface Interface extends BaseThing {
-    type: AllTypes.limb;
-    leaves: Leaf.Interface[];
-  }
-
-  export const factory: BaseFactory<Interface> = ({
+const leafFactory: BaseFactory<Leaf> = ({
+  position,
+}: {
+  position: Position;
+}) => {
+  const leaf: Leaf = {
+    type: leafType,
     position,
-  }: {
-    position: Position;
-  }): Interface => {
-    const id = v4();
-
-    return {
-      type: AllTypes.limb,
-      leaves: [Leaf.factory({ position: id })],
-      position,
-      id,
-    };
+    id: v4(),
   };
+
+  return leaf;
+};
+
+export const leafUtils: BaseUtils<Leaf> = {
+  type: leafType,
+  factory: leafFactory,
+};
+
+const limbType = "limb" as const;
+
+export interface Limb extends BaseThing {
+  type: typeof limbType;
+  leaves: Leaf[];
 }
 
-export namespace Tree {
-  export interface Interface extends BaseThing {
-    type: AllTypes.tree;
-    limbs: Limb.Interface[];
-  }
+const limbFactory: BaseFactory<Limb> = ({
+  position,
+}: {
+  position: Position;
+}): Limb => {
+  const id = v4();
 
-  export const factory: BaseFactory<Interface> = ({
+  return {
+    type: limbType,
+    leaves: [leafUtils.factory({ position: id })],
     position,
-  }: {
-    position: Position;
-  }): Interface => {
-    const id = v4();
-
-    return {
-      type: AllTypes.tree,
-      limbs: [Limb.factory({ position: id })],
-      id,
-      position,
-    };
+    id,
   };
+};
 
-  export const tick = (_tree: Interface) => {
-    // do one action
-    // probalistically grow a branch or something
-    // .1% chance to die and create a log
-  };
+export const limbUtils: BaseUtils<Limb> = {
+  type: limbType,
+  factory: limbFactory,
+};
+
+const treeType = "tree" as const;
+
+export interface Tree extends BaseThing {
+  type: typeof treeType;
+  limbs: Limb[];
 }
+
+const treeFactory: BaseFactory<Tree> = ({
+  position,
+}: {
+  position: Position;
+}): Tree => {
+  const id = v4();
+
+  return {
+    type: treeType,
+    limbs: [limbUtils.factory({ position: id })],
+    id,
+    position,
+  };
+};
+
+const treeTick: BaseTick<Tree> = (_args) => {
+  // do one action
+  // probalistically grow a branch or something
+  // .1% chance to die and create a log
+  return undefined;
+};
+
+export const treeUtils: BaseUtils<Tree> = {
+  type: treeType,
+  tick: treeTick,
+  factory: treeFactory,
+};
