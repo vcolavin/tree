@@ -1,4 +1,5 @@
-import { tick } from "./models/BaseThing";
+import { AllThings, allThingUtils } from "./models";
+import { BaseTick } from "./models/BaseThing";
 import { BlockContentDict, save, updateList } from "./models/Block";
 import { Block, generateList } from "./models/Block";
 import { render } from "./Render";
@@ -58,3 +59,7 @@ const mainLoop = async (block: Block) => {
 };
 
 window.onload = initialize;
+
+const tick: BaseTick<AllThings> = (args) => {
+  return allThingUtils[args.thing.type].tick?.(args);
+};
