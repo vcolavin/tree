@@ -1,4 +1,4 @@
-import { BaseThing, Coordinates } from "./BaseThing";
+import { BaseThing, Coordinates, isCoordinates } from "./BaseThing";
 
 /**
  * Four-dimensional array describing positions of things.
@@ -55,7 +55,7 @@ const getEmptyContentList = (): BlockContentList => [
 // what we'll do in the future is collect diffs and apply them to the list
 export const generateList = (blockDict: BlockContentDict): BlockContentList => {
   const thing: BlockContentList = Object.values(blockDict)
-    .filter((thing) => typeof thing.position !== "string")
+    .filter(({ position }) => isCoordinates(position))
     .reduce((memo, thing) => {
       const [x, y, z] = thing.position as Coordinates;
 
@@ -84,7 +84,7 @@ export const updateList = ({
   Object.entries(diff).forEach(([id, thing]) => {
     // remove it from its original position
     const oldPosition = original[id].position;
-    if (typeof oldPosition === "object") {
+    if (isCoordinates(oldPosition)) {
       const [x, y, z] = oldPosition;
       const space = list[z][x][y];
 
@@ -94,7 +94,7 @@ export const updateList = ({
 
     // and add it to its new position
     const newPosition = thing.position;
-    if (typeof newPosition === "object") {
+    if (isCoordinates(newPosition)) {
       const [x, y, z] = newPosition;
       list[z][x][y].push(id);
     }

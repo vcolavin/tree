@@ -5,6 +5,9 @@ export type Coordinates = [number, number, number];
 export type UUID = string;
 export type Position = Coordinates | UUID;
 
+export const isCoordinates = (position: Position): position is Coordinates =>
+  typeof position !== "string";
+
 export interface BaseThing {
   // TODO: there may be things that don't need positions
   // like concepts or memories or rivers (which occupy many positions),
