@@ -50,19 +50,25 @@ const getEmptyContentList = (): BlockContentList => [
   getEmptyLevel(),
 ];
 
-// TODO right now we are going to generate the list on each game loop,
-// which will probably be inefficient
-// what we'll do in the future is collect diffs and apply them to the list
+/**
+ * creates and fills a content list based off a content dictionary
+ */
 export const generateList = (blockDict: BlockContentDict): BlockContentList => {
-  const thing: BlockContentList = Object.values(blockDict)
-    .filter(({ position }) => isCoordinates(position))
-    .reduce((memo, thing) => {
-      const [x, y, z] = thing.position as Coordinates;
+  const thing: BlockContentList = Object.values(blockDict).reduce(
+    (memo, thing) => {
+      if (!isCoordinates(thing.position)) {
+        return memo;
+      }
+
+      const [x, y, z] = thing.position;
 
       // currently we don't care about vertical ordering within a space
+      // so just shove it in there as we go
       memo[z][x][y].push(thing.id);
       return memo;
-    }, getEmptyContentList());
+    },
+    getEmptyContentList()
+  );
 
   return thing;
 };
