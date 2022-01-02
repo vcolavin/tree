@@ -1,11 +1,9 @@
 import { personUtils, Person } from "./Person";
 import { Leaf, leafUtils, Limb, limbUtils, Tree, treeUtils } from "./Tree";
 
-export const allThingUtils = {
-  [personUtils.type]: personUtils,
-  [leafUtils.type]: leafUtils,
-  [treeUtils.type]: treeUtils,
-  [limbUtils.type]: limbUtils,
-};
+export type Thing = Person | Tree | Limb | Leaf;
 
-export type AllThings = Person | Tree | Limb | Leaf;
+export const thingUtils = [personUtils, leafUtils, treeUtils, limbUtils].reduce(
+  (memo, util) => ({ ...memo, [util.type]: util }),
+  {} as any
+);

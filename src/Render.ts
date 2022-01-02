@@ -1,4 +1,4 @@
-import { AllTypes } from "./models/AllTypes";
+import { thingUtils } from "./models";
 import { Block, BlockContentDict } from "./models/Block";
 
 // TODO: render a block with a nice border and a name
@@ -39,6 +39,7 @@ export const render = ({
 };
 
 // TODO: how will we represent color information?
+// e.g. something on fire should be red
 // this might also be better served by a object than a case statement
 // but this is fine for now
 export const getSymbol = ({
@@ -48,16 +49,7 @@ export const getSymbol = ({
   thingId?: string;
   contentDict: BlockContentDict;
 }): string | undefined => {
-  if (!thingId) {
-    return undefined;
-  }
+  const thing = contentDict[thingId];
 
-  switch (contentDict[thingId]?.type) {
-    case AllTypes.person:
-      return "P";
-    case AllTypes.tree:
-      return "T";
-    default:
-      return undefined;
-  }
+  return thingUtils[thing?.type]?.symbol;
 };

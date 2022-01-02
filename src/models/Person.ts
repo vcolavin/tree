@@ -49,4 +49,5 @@ export const personUtils: BaseUtils<Person> = {
   type: PersonType,
   factory,
   tick,
+  symbol: "P",
 };

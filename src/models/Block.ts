@@ -1,4 +1,4 @@
-import { AllThings } from ".";
+import { Thing } from ".";
 import { isCoordinates } from "./BaseThing";
 
 /**
@@ -11,7 +11,7 @@ import { isCoordinates } from "./BaseThing";
  */
 export type BlockContentList = string[][][][];
 
-export type BlockContentDict = { [key: string]: AllThings };
+export type BlockContentDict = { [key: string]: Thing };
 
 // Block is going to be the main item in memory that contains the 10x10x10 grid
 export type Block = {

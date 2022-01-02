@@ -93,4 +93,5 @@ export const treeUtils: BaseUtils<Tree> = {
   type: treeType,
   tick: treeTick,
   factory: treeFactory,
+  symbol: "T",
 };

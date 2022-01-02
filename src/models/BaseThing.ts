@@ -19,6 +19,7 @@ export interface BaseUtils<T extends BaseThing> {
   type: T["type"];
   factory: BaseFactory<T>;
   tick?: BaseTick<T>;
+  symbol?: string;
 }
 
 export type BaseFactory<T extends BaseThing> = (args: {
