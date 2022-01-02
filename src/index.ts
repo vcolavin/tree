@@ -2,7 +2,7 @@ import { Thing, thingUtils } from "./models";
 import { BaseThing, BaseTick } from "./models/BaseThing";
 import { BlockContentDict, save, updateList } from "./models/Block";
 import { Block, generateList } from "./models/Block";
-import { render } from "./Render";
+import { render } from "./render";
 import { seed } from "./seed";
 
 const initialize = () => {
