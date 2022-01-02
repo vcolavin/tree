@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 
 import {
+  BaseDescribe,
   BaseFactory,
   BaseThing,
   BaseTick,
@@ -89,9 +90,14 @@ const treeTick: BaseTick<Tree> = (_args) => {
   return undefined;
 };
 
+const describeTree: BaseDescribe<Tree> = (tree) => {
+  return `it is a tree with ${tree.limbs.length} branches`;
+};
+
 export const treeUtils: BaseUtils<Tree> = {
   type: treeType,
   tick: treeTick,
   factory: treeFactory,
   symbol: "T",
+  describe: describeTree,
 };

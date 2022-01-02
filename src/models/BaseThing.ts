@@ -17,10 +17,13 @@ export interface BaseThing {
 
 export interface BaseUtils<T extends BaseThing> {
   type: T["type"];
+  symbol?: string;
   factory: BaseFactory<T>;
   tick?: BaseTick<T>;
-  symbol?: string;
+  describe?: BaseDescribe<T>;
 }
+
+export type BaseDescribe<T extends BaseThing> = (thing: T) => string;
 
 export type BaseFactory<T extends BaseThing> = (args: {
   position: Position;

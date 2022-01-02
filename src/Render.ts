@@ -53,8 +53,10 @@ export const render = ({
     .map((id) => {
       const thing = contentDict[id];
 
-      return thing.type;
+      // TODO: I shouldn't need as any here
+      return thingUtils[thing.type]?.describe(thing as any);
     })
+    .filter((str) => str)
     .join("\n");
 
   document.getElementById("details-sidebar").innerHTML = description;

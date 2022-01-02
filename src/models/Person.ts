@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import { Block, BlockContentDict } from "./Block";
 
 import {
+  BaseDescribe,
   BaseFactory,
   BaseThing,
   BaseTick,
@@ -43,9 +44,14 @@ const tick: BaseTick<Person> = ({
   }
 };
 
+const describe: BaseDescribe<Person> = (person) => {
+  return `it is ${person.name}`;
+};
+
 export const personUtils: BaseUtils<Person> = {
   type: PersonType,
   factory,
   tick,
   symbol: "P",
+  describe,
 };
