@@ -1,12 +1,19 @@
 import { thingUtils } from "./models";
-import { BaseThing, BaseTick } from "./models/BaseThing";
-import { BlockContentDict, save, updateList } from "./models/Block";
-import { Block, generateList } from "./models/Block";
+import { BaseThing, BaseTick, Coordinates } from "./models/BaseThing";
+import {
+  generateList,
+  Block,
+  BlockContentDict,
+  save,
+  updateList,
+} from "./models/Block";
 import { render } from "./render";
 import { seed } from "./seed";
 
 type GameState = "running" | "paused";
 let gameState: GameState = "running";
+
+let cursorPosition: Coordinates = [0, 0, 0];
 
 const attachListeners = () => {
   document.getElementById("pause-button").addEventListener("click", (e) => {
@@ -18,6 +25,23 @@ const attachListeners = () => {
 
   document.getElementById("reload-button").addEventListener("click", () => {
     seed();
+  });
+
+  document.addEventListener("keydown", ({ key }) => {
+    switch (key) {
+      case "ArrowLeft":
+        cursorPosition[0] = Math.max(cursorPosition[0] - 1, 0);
+        break;
+      case "ArrowRight":
+        cursorPosition[0] = Math.min(cursorPosition[0] + 1, 9);
+        break;
+      case "ArrowDown":
+        cursorPosition[1] = Math.min(cursorPosition[1] + 1, 9);
+        break;
+      case "ArrowUp":
+        cursorPosition[1] = Math.max(cursorPosition[1] - 1, 0);
+        break;
+    }
   });
 };
 
@@ -67,14 +91,11 @@ const mainLoop = async (block: Block) => {
       save(block);
     }
 
-    render({ block, zLevel: 0, tickCount });
+    render({ block, zLevel: 0, tickCount, cursorPosition });
 
-    // perhaps break on a keystroke
     await new Promise((resolve) => {
-      setTimeout(resolve, 300);
+      setTimeout(resolve, 333);
     });
-
-    // break;
   }
 };
 

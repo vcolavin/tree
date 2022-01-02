@@ -1,4 +1,5 @@
 import { thingUtils } from "./models";
+import { Coordinates } from "./models/BaseThing";
 import { Block, BlockContentDict } from "./models/Block";
 
 // TODO: render a block with a nice border and a name
@@ -16,15 +17,25 @@ export const render = ({
   block: { contentList, contentDict },
   zLevel,
   tickCount = 0,
+  cursorPosition,
 }: {
   block: Block;
   zLevel: number;
   tickCount?: number;
+  cursorPosition: Coordinates;
 }): void => {
   const level = contentList[zLevel];
 
-  const screen = level.map((row) => {
-    const constructedRow = row.map((col) => {
+  const screen = level.map((row, rowIndex) => {
+    const constructedRow = row.map((col, colIndex) => {
+      if (
+        colIndex === cursorPosition[0] &&
+        rowIndex === cursorPosition[1] &&
+        (tickCount % 3 === 0 || (tickCount - 1) % 3 === 0)
+      ) {
+        return "X";
+      }
+
       // the % operator allows us to cycle through items on a space
       const thingId = col[tickCount % col.length];
 
