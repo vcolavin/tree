@@ -12,8 +12,8 @@ import { seed } from "./seed";
 
 type GameState = "running" | "paused";
 
-const globalState: { cursorPosition: Coordinates; gameState: GameState } = {
-  cursorPosition: [0, 0, 0],
+const globalState: { cursor: Coordinates; gameState: GameState } = {
+  cursor: [0, 0, 0],
   gameState: "running",
 };
 
@@ -67,7 +67,7 @@ const mainLoop = async (block: Block) => {
       block,
       zLevel: 0,
       tickCount,
-      cursorPosition: globalState.cursorPosition,
+      cursor: globalState.cursor,
     });
 
     await new Promise((resolve) => {
@@ -95,30 +95,19 @@ const attachListeners = () => {
   });
 
   document.addEventListener("keydown", ({ key }) => {
+    const { cursor } = globalState;
     switch (key) {
       case "ArrowLeft":
-        globalState.cursorPosition[0] = Math.max(
-          globalState.cursorPosition[0] - 1,
-          0
-        );
+        cursor[0] = Math.max(cursor[0] - 1, 0);
         break;
       case "ArrowRight":
-        globalState.cursorPosition[0] = Math.min(
-          globalState.cursorPosition[0] + 1,
-          9
-        );
+        cursor[0] = Math.min(cursor[0] + 1, 9);
         break;
       case "ArrowDown":
-        globalState.cursorPosition[1] = Math.min(
-          globalState.cursorPosition[1] + 1,
-          9
-        );
+        cursor[1] = Math.min(cursor[1] + 1, 9);
         break;
       case "ArrowUp":
-        globalState.cursorPosition[1] = Math.max(
-          globalState.cursorPosition[1] - 1,
-          0
-        );
+        cursor[1] = Math.max(cursor[1] - 1, 0);
         break;
     }
   });

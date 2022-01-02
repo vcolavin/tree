@@ -17,20 +17,20 @@ export const render = ({
   block: { contentList, contentDict },
   zLevel,
   tickCount = 0,
-  cursorPosition,
+  cursor,
 }: {
   block: Block;
   zLevel: number;
   tickCount?: number;
-  cursorPosition: Coordinates;
+  cursor: Coordinates;
 }): void => {
   const level = contentList[zLevel];
 
   const screen = level.map((row, rowIndex) => {
     const constructedRow = row.map((col, colIndex) => {
       if (
-        colIndex === cursorPosition[0] &&
-        rowIndex === cursorPosition[1] &&
+        colIndex === cursor[0] &&
+        rowIndex === cursor[1] &&
         (tickCount % 3 === 0 || (tickCount - 1) % 3 === 0)
       ) {
         return "X";
