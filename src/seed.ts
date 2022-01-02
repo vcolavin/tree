@@ -1,7 +1,6 @@
 import { Block, BlockContentDict, generateList, save } from "./models/Block";
-import { Tree } from "./models/Tree";
-import { Person } from "./models/Person";
-import { BaseFactory, BaseThing, Coordinates } from "./models/BaseThing";
+import { BaseFactory, Coordinates } from "./models/BaseThing";
+import { Thing, thingUtils } from "./models";
 
 const generateRandomCoords = ({
   max = 9,
@@ -13,7 +12,7 @@ const generateRandomCoords = ({
   return [x, y, 0];
 };
 
-const generateN = <T extends BaseThing>({
+const generateN = <T extends Thing>({
   factory,
   n,
   args = {},
@@ -35,8 +34,8 @@ const generateN = <T extends BaseThing>({
 export const seed = () => {
   const contentDict: BlockContentDict = {};
 
-  const trees = generateN({ factory: Tree.factory, n: 5 });
-  const people = generateN({ factory: Person.factory, n: 3 });
+  const trees = generateN({ factory: thingUtils.tree.factory, n: 5 });
+  const people = generateN({ factory: thingUtils.person.factory, n: 3 });
 
   trees.forEach((tree) => (contentDict[tree.id] = tree));
   people.forEach((person) => (contentDict[person.id] = person));
