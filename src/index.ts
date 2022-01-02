@@ -1,11 +1,29 @@
-import { Thing, thingUtils } from "./models";
+import { thingUtils } from "./models";
 import { BaseThing, BaseTick } from "./models/BaseThing";
 import { BlockContentDict, save, updateList } from "./models/Block";
 import { Block, generateList } from "./models/Block";
 import { render } from "./render";
 import { seed } from "./seed";
 
+type GameState = "running" | "paused";
+let gameState: GameState = "running";
+
+const attachListeners = () => {
+  document.getElementById("pause-button").addEventListener("click", (e) => {
+    (e.target as HTMLButtonElement).innerHTML =
+      gameState === "running" ? "start" : "pause";
+
+    gameState = gameState === "running" ? "paused" : "running";
+  });
+
+  document.getElementById("reload-button").addEventListener("click", () => {
+    seed();
+  });
+};
+
 const initialize = () => {
+  attachListeners();
+
   let loadedContent = localStorage.getItem("0x0");
 
   // if the contents don't exist
@@ -31,21 +49,23 @@ const mainLoop = async (block: Block) => {
 
   while (++tickCount) {
     // generate and collate changes
-    const diff = Object.values(block.contentDict)
-      .map((thing) => tick({ thing, block }))
-      .filter((diff) => diff)
-      .reduce((memo, diff) => ({ ...memo, ...diff }), {});
+    if (gameState === "running") {
+      const diff = Object.values(block.contentDict)
+        .map((thing) => tick({ thing, block }))
+        .filter((diff) => diff)
+        .reduce((memo, diff) => ({ ...memo, ...diff }), {});
 
-    updateList({
-      list: block.contentList,
-      diff,
-      original: block.contentDict,
-    });
+      updateList({
+        list: block.contentList,
+        diff,
+        original: block.contentDict,
+      });
 
-    // reconcile change (very naive implementation)
-    block.contentDict = { ...block.contentDict, ...diff };
+      // reconcile change (very naive implementation)
+      block.contentDict = { ...block.contentDict, ...diff };
 
-    save(block);
+      save(block);
+    }
 
     render({ block, zLevel: 0, tickCount });
 

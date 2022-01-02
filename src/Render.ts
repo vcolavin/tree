@@ -25,6 +25,7 @@ export const render = ({
 
   const screen = level.map((row) => {
     const constructedRow = row.map((col) => {
+      // the % operator allows us to cycle through items on a space
       const thingId = col[tickCount % col.length];
 
       return getSymbol({ thingId, contentDict }) ?? " ";
