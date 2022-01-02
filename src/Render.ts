@@ -25,15 +25,17 @@ export const render = ({
   cursor: Coordinates;
 }): void => {
   const level = contentList[zLevel];
+  let thingsAtCursor: string[];
 
   const screen = level.map((row, rowIndex) => {
     const constructedRow = row.map((col, colIndex) => {
-      if (
-        colIndex === cursor[0] &&
-        rowIndex === cursor[1] &&
-        (tickCount % 3 === 0 || (tickCount - 1) % 3 === 0)
-      ) {
-        return "X";
+      // rendering the cursor
+      if (colIndex === cursor[0] && rowIndex === cursor[1]) {
+        thingsAtCursor = col;
+
+        if (tickCount % 3 === 0 || (tickCount - 1) % 3 === 0) {
+          return "X";
+        }
       }
 
       // the % operator allows us to cycle through items on a space
@@ -46,6 +48,16 @@ export const render = ({
   });
 
   screen.push(`tick: ${tickCount}`);
+
+  const description = thingsAtCursor
+    .map((id) => {
+      const thing = contentDict[id];
+
+      return thing.type;
+    })
+    .join("\n");
+
+  document.getElementById("details-sidebar").innerHTML = description;
 
   document.getElementById("rendering-space").innerHTML = screen.join("\n");
 };
