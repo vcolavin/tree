@@ -11,38 +11,10 @@ import { render } from "./render";
 import { seed } from "./seed";
 
 type GameState = "running" | "paused";
-let gameState: GameState = "running";
 
-let cursorPosition: Coordinates = [0, 0, 0];
-
-const attachListeners = () => {
-  document.getElementById("pause-button").addEventListener("click", (e) => {
-    (e.target as HTMLButtonElement).innerHTML =
-      gameState === "running" ? "start" : "pause";
-
-    gameState = gameState === "running" ? "paused" : "running";
-  });
-
-  document.getElementById("reload-button").addEventListener("click", () => {
-    seed();
-  });
-
-  document.addEventListener("keydown", ({ key }) => {
-    switch (key) {
-      case "ArrowLeft":
-        cursorPosition[0] = Math.max(cursorPosition[0] - 1, 0);
-        break;
-      case "ArrowRight":
-        cursorPosition[0] = Math.min(cursorPosition[0] + 1, 9);
-        break;
-      case "ArrowDown":
-        cursorPosition[1] = Math.min(cursorPosition[1] + 1, 9);
-        break;
-      case "ArrowUp":
-        cursorPosition[1] = Math.max(cursorPosition[1] - 1, 0);
-        break;
-    }
-  });
+const globalState: { cursorPosition: Coordinates; gameState: GameState } = {
+  cursorPosition: [0, 0, 0],
+  gameState: "running",
 };
 
 const initialize = () => {
@@ -73,7 +45,7 @@ const mainLoop = async (block: Block) => {
 
   while (++tickCount) {
     // generate and collate changes
-    if (gameState === "running") {
+    if (globalState.gameState === "running") {
       const diff = Object.values(block.contentDict)
         .map((thing) => tick({ thing, block }))
         .filter((diff) => diff)
@@ -91,7 +63,12 @@ const mainLoop = async (block: Block) => {
       save(block);
     }
 
-    render({ block, zLevel: 0, tickCount, cursorPosition });
+    render({
+      block,
+      zLevel: 0,
+      tickCount,
+      cursorPosition: globalState.cursorPosition,
+    });
 
     await new Promise((resolve) => {
       setTimeout(resolve, 333);
@@ -103,3 +80,46 @@ window.onload = initialize;
 
 const tick: BaseTick<BaseThing> = ({ thing, block }) =>
   thingUtils[thing.type].tick?.({ thing, block });
+
+const attachListeners = () => {
+  document.getElementById("pause-button").addEventListener("click", (e) => {
+    (e.target as HTMLButtonElement).innerHTML =
+      globalState.gameState === "running" ? "start" : "pause";
+
+    globalState.gameState =
+      globalState.gameState === "running" ? "paused" : "running";
+  });
+
+  document.getElementById("reload-button").addEventListener("click", () => {
+    seed();
+  });
+
+  document.addEventListener("keydown", ({ key }) => {
+    switch (key) {
+      case "ArrowLeft":
+        globalState.cursorPosition[0] = Math.max(
+          globalState.cursorPosition[0] - 1,
+          0
+        );
+        break;
+      case "ArrowRight":
+        globalState.cursorPosition[0] = Math.min(
+          globalState.cursorPosition[0] + 1,
+          9
+        );
+        break;
+      case "ArrowDown":
+        globalState.cursorPosition[1] = Math.min(
+          globalState.cursorPosition[1] + 1,
+          9
+        );
+        break;
+      case "ArrowUp":
+        globalState.cursorPosition[1] = Math.max(
+          globalState.cursorPosition[1] - 1,
+          0
+        );
+        break;
+    }
+  });
+};
