@@ -41,8 +41,6 @@ const tick: BaseTick<Person> = ({
       },
     };
   }
-
-  return {};
 };
 
 export const personUtils: BaseUtils<Person> = {
