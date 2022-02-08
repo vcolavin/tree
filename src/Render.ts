@@ -51,10 +51,10 @@ export const render = ({
 
   const description = thingsAtCursor
     .map((id) => {
-      const thing = contentDict[id];
+      const thing = contentDict[id] as BaseThing;
 
       // TODO: I shouldn't need as any here
-      return thingUtils[thing.type]?.describe(thing as any);
+      return thingUtils[thing.type]?.describe(thing);
     })
     .filter((str) => str)
     .join("\n");
