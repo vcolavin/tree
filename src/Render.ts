@@ -1,18 +1,7 @@
 import { thingUtils } from "./models";
-import { Coordinates } from "./models/BaseThing";
+import { BaseThing, Coordinates } from "./models/BaseThing";
 import { Block, BlockContentDict } from "./models/Block";
 
-// TODO: render a block with a nice border and a name
-// like this:
-/*
- *  +----Block1x1-----+
- *  |                 |
- *  |     block       |
- *  |    contents     |
- *  |                 |
- *  |                 |
- *  +-----------------+
- */
 export const render = ({
   block: { contentList, contentDict },
   zLevel,
@@ -38,7 +27,7 @@ export const render = ({
         }
       }
 
-      // the % operator allows us to cycle through items on a space
+      // cycle through items on a space using remainder operator
       const thingId = col[tickCount % col.length];
 
       return getSymbol({ thingId, contentDict }) ?? " ";
